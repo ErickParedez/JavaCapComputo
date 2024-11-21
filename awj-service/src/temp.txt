@@ -1,0 +1,17 @@
+
+Endpoint --> Service --> Dao --> Entity
+
+Short 16
+Int 32 
+Long 64
+
+BigInteger 
+
+Float 
+
+Double  a * b / c = 2.9999998 
+
+BigDecimal =  3 
+12 
+
+(a.multiply(b)).divide(c, 12, .HALF_DOWN)

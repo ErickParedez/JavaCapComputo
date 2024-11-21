@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Books</h1>
+    
+    <button id="fetchData">Obtener Información</button>
+    
+    <div id="output">
+        
+        <strong>Response:</strong>
+
+        <pre id="response"></pre>
+    </div>
+
+    <script>
+        document.getElementById("fetchData").addEventListener("click", () => {            
+            fetch("http://localhost:8080/awj-service/v1/books", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error: status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {                    
+                    document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById("response").textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+
+</html>
