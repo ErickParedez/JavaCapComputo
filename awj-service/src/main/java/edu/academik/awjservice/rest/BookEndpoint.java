@@ -11,6 +11,7 @@ import edu.academik.awjservice.service.BookService;
 import edu.academik.awjservice.service.CreateBookService;
 import edu.academik.awjservice.service.UpdatePriceBookService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -55,9 +56,9 @@ public class BookEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(CreateBookRequest request) {
-        this.createBookService.create(request);
-        return Response.ok().build();
+    public Response create(@Valid CreateBookRequest request) {
+        var createBookResponse = this.createBookService.create(request);
+        return Response.ok(createBookResponse).build();
     }
 
     @PUT

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat (JSON)</title>
+</head>
+
+<body>
+    <h1>WebSocket Chat (JSON)</h1>
+    <div id="messages" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
+        <!-- Mensajes recibidos se mostrarán aquí -->
+    </div>
+    <input type="text" id="username" placeholder="Nombre de usuario" style="width: 30%; margin-bottom: 10px;">
+    <br>
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje..." style="width: 80%;">
+    <button id="sendButton">Enviar</button>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:8080/awj-service/ws/jsonchat");
+
+        const messagesDiv = document.getElementById("messages");
+        const usernameInput = document.getElementById("username");
+        const messageInput = document.getElementById("messageInput");
+        const sendButton = document.getElementById("sendButton");
+
+        ws.onopen = () => {
+            appendMessage("Conectado al servidor WebSocket");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            appendMessage(`${data.username}: ${data.message}`);
+        };
+
+        ws.onclose = () => {
+            appendMessage("Conexión cerrada");
+        };
+
+        sendButton.addEventListener("click", () => {
+            const username = usernameInput.value.trim();
+            
+            const message = messageInput.value.trim();
+
+            if (username && message) {
+                const jsonMessage = {
+                    username: username,
+                    message: message
+                };
+                ws.send(JSON.stringify(jsonMessage));
+                messageInput.value = "";
+            } else {
+                alert("Por favor, ingresa un nombre de usuario y un mensaje.");
+            }
+        });
+
+        function appendMessage(message) {
+            const p = document.createElement("p");
+            p.textContent = message;
+            messagesDiv.appendChild(p);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>

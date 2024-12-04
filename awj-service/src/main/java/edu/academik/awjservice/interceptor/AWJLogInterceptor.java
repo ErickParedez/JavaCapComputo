@@ -1,7 +1,7 @@
 package edu.academik.awjservice.interceptor;
 
+import java.time.LocalDateTime;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import jakarta.annotation.Priority;
@@ -21,6 +21,8 @@ public class AWJLogInterceptor {
         // Reflection
         log.log(Level.INFO, "Método: {0}.", context.getMethod().getName());
 
+        log.log(Level.INFO, "Tiempo de entrada: {0}.", LocalDateTime.now());
+
         if (context.getParameters() != null) {
 
             Stream.of(context.getParameters())
@@ -31,6 +33,8 @@ public class AWJLogInterceptor {
         Object result = context.proceed();
 
         log.log(Level.INFO, "Resultado: {0}.", result);
+
+        log.log(Level.INFO, "Tiempo de salida: {0}.", LocalDateTime.now());
 
         return result;
     }

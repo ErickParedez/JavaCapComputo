@@ -68,4 +68,23 @@ public class BookDao {
         public Optional<Book> findById(Long id) {
                 return Optional.ofNullable(this.entityManager.find(Book.class, id));
         }
+
+        public boolean existsIsbn(String isbn) {
+                // select count(*) from book where ibsn = ?
+                CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+                CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+                Root<Book> root = query.from(Book.class);
+
+                query.where(builder.equal(root.get("isbn"), isbn));
+
+                query.select(builder.count(root));
+
+                // count > 0 : true
+                return this.entityManager.createQuery(query).getSingleResult()
+                                .compareTo(0L) > 0;
+
+        }
+
 }

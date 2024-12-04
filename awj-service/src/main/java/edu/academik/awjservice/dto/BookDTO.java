@@ -2,6 +2,7 @@ package edu.academik.awjservice.dto;
 
 import java.math.BigDecimal;
 
+import jakarta.xml.bind.annotation.XmlElement;
 import lombok.Builder;
 import lombok.Value;
 
@@ -19,4 +20,8 @@ public class BookDTO {
 
     BigDecimal price;
 
+    @XmlElement(name = "bookIdWS")
+    public Long getBookIdWS() {
+        return this.bookId;
+    }
 }
